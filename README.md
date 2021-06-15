@@ -18,7 +18,7 @@ This modular input makes an HTTPS request to the GitHub Enterprise's Audit Log R
 
 1. SSH to your Splunk server
 
-2. Download the latest release from [Releases](https://github.com/splunk/TA_splunk_ghe_audit_log_monitoring/releases)
+2. Download the latest release from [Releases](https://github.com/splunk/github-audit-log-monitoring-add-on-for-splunk/releases)
 
 3. Copy the tarball to the apps directory and extract it:
 
@@ -120,39 +120,13 @@ This modular input fetches events by calling the [Enterprise Audit Log API](http
 | Poizen-Inc   | 5000              | 5000                    | */1* ** * | 3000 per hour  | We are approaching API rate limit per hour.  Depending on latency, 5000 entries = 50 API calls per minute.  One minute might not be sufficient to fetch all this data. |
 | Monsters-Inc | 10000             | 2000                    | */1* ** * | 1200 per hour  | You will be fetching events with a slight delay.                                                                                                                       |
 
-## Development Environment Setup
-
-### Using the Splunk Docker container
-
-1. Download the latest release from [Releases](https://github.com/github/splunk-ghe-audit-log-monitoring/releases)
-
-2. Run a test instance of Splunk with the plugin installed locally. Don't forget to replace `<WORKING_DIR>` with your current directory.
-
-```sh
-# Extract the tarball
-$ tar xf <WORKING_DIR>/splunk-ghe-audit-log-monitoring-<VERSION>.tar.gz -C <WORKING_DIR>/ghe_audit_log_monitoring --strip-components=1
-
-# Launch  the Splunk docker container
-$ docker run -p 8088:8088 -p 8000:8000 -p 9997:9997 -e "SPLUNK_PASSWORD=MYP@SSW0RD" -e "SPLUNK_START_ARGS=--accept-license" --name splunk_demo splunk/splunk
-
-# Move the modular input inside the docker container and apply the necessary permission changes
-$ docker exec -i splunk_demo sh -c "sudo rm -rf /opt/splunk/etc/apps/ghe_audit_log_monitoring" && \
-docker cp <WORKING_DIR>/ghe_audit_log_monitoring splunk_demo:/opt/splunk/etc/apps/ghe_audit_log_monitoring && \
-docker exec -i splunk_demo sh -c "sudo chown -R splunk:splunk /opt/splunk/etc/apps/ghe_audit_log_monitoring" && \
-docker exec -i splunk_demo sh -c "sudo chmod -R 775 /opt/splunk/etc/apps/ghe_audit_log_monitoring/state"
-
-# Restart splunk
-docker exec -ti splunk_demo sh
-sudo $SPLUNK_HOME/bin/splunk restart
-```
-
 ## Use cases
 
 ### Activity dashboard example
 
-Along with this modular input we're providing a [sample activity dashboard](./dashboards/activity_dashboard.xml) that makes use of the collected audit log events to give you an overview of the activities across your enterprise.
+Along with this modular input we're providing a [Github App for Splunk](https://github.com/splunk/github_app_for_splunk) that makes use of the collected audit log events to give you an overview of the activities across your enterprise.
 
-You can install it via the [dashboard editor in Splunk](https://docs.splunk.com/Documentation/Splunk/8.1.2/Viz/CreateandeditdashboardsviatheUI).
+You can install it via the [Manage Apps page](https://docs.splunk.com/Documentation/Splunk/8.2.0/Admin/Deployappsandadd-ons).
 
 Make sure to replace the `[STANZA_NAME]` placeholder with the name of your modular input instance (the first field in the input parameters configured in the previous section).
 
