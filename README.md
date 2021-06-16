@@ -13,6 +13,7 @@ This modular input makes an HTTPS request to the GitHub Enterprise's Audit Log R
 - Splunk v7.3.5+
 - Python 2.7+
   - Successfully tested with python 3.x but support is not guaranteed yet
+- GitHub Enterprise Cloud or GitHub Enterprise Server 2.21+
 
 ## Installation
 
