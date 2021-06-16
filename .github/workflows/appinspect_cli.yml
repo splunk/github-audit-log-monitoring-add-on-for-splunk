@@ -48,6 +48,6 @@ jobs:
           sed -i "s/$old_str/$new_str/g" ./github-audit-log-monitoring-add-on-for-splunk/default/app.conf
 
       - name: Run App Inspect CLI
-        uses: splunk/appinspect-cli-action@master
+        uses: splunk/appinspect-cli-action@main
         with:
           app-path: github-audit-log-monitoring-add-on-for-splunk/
