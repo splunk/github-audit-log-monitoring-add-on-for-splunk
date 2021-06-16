@@ -10,10 +10,9 @@ This modular input makes an HTTPS request to the GitHub Enterprise's Audit Log R
 
 ## Prerequisites
 
-- Splunk v7.3.5+
-- Python 2.7+
-  - Successfully tested with python 3.x but support is not guaranteed yet
-- GitHub Enterprise Cloud or GitHub Enterprise Server 2.21+
+- Splunk v8.0+
+- Python 3.7+
+- GitHub Enterprise Cloud
 
 ## Installation
 
@@ -178,4 +177,6 @@ State files for enterprises are stored in this directory:
 ```sh
 $SPLUNK_HOME/etc/apps/ghe_audit_log_monitoring/state/
 ```
-Test
+## Support
+
+Support for Github Audit Log Monitoring Add-On for Splunk is run through [Github Issues](https://github.com/splunk/github-audit-log-monitoring-add-on-for-splunk/issues). Please open a new issue for any support issues or for feature requests. You may also open a Pull Request if you'd like to contribute additional dashboards, eventtypes for webhooks, or enhancements you may have.
