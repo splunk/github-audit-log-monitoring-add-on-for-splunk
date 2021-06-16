@@ -10,37 +10,19 @@ This modular input makes an HTTPS request to the GitHub Enterprise's Audit Log R
 
 ## Prerequisites
 
-- Splunk v8.0+
+- Splunk Heavy Forwarder v8.0+
 - Python 3.7+
 - GitHub Enterprise Cloud
 
 ## Installation
 
-1. SSH to your Splunk server
+1. Download the latest release from [Splunkbase](https://splunkbase.splunk.com/app/5595/)
 
-2. Download the latest release from [Releases](https://github.com/splunk/github-audit-log-monitoring-add-on-for-splunk/releases)
+1. On a Splunk Heavy Forwarder, go to Apps > Manage Apps.
 
-3. Copy the tarball to the apps directory and extract it:
+1. On the Apps page, click **Install app from file**, and upload the SPL file you downloaded from Splunkbase. If an existing copy of the app already exists, please check the *Upgrade app* checkbox.
 
-   ```sh
-   $ cp splunk-ghe-audit-log-monitoring-<VERSION>.tar.gz $SPLUNK_HOME/etc/apps/
-
-   $ mkdir -p $SPLUNK_HOME/etc/apps/ghe_audit_log_monitoring
-
-   $ tar xf $SPLUNK_HOME/etc/apps/splunk-ghe-audit-log-monitoring-<VERSION>.tar.gz -C $SPLUNK_HOME/etc/apps/ghe_audit_log_monitoring --strip-components=1
-
-   # Optional depending on the user executing the previous actions
-   $ sudo chown -R splunk:splunk $SPLUNK_HOME/etc/apps/ghe_audit_log_monitoring
-
-   # Make the state directory writable by the group
-   $ sudo chmod -R 775 /opt/splunk/etc/apps/ghe_audit_log_monitoring/state
-   ```
-
-4. Restart the Splunk server
-
-5. Generate a Personal Access Token in GitHub Enterprise with the `site_admin` scope.
-
-6. Configure and the GitHub Enterprise Audit Log Monitoring by entering the necessary information in the input fields
+1. Generate a Personal Access Token in GitHub Enterprise with the `site_admin` scope.
 
 ## Configuration
 
@@ -122,9 +104,9 @@ This modular input fetches events by calling the [Enterprise Audit Log API](http
 
 ## Use cases
 
-### Activity dashboard example
+### Github App for Splunk
 
-Along with this modular input we're providing a [Github App for Splunk](https://github.com/splunk/github_app_for_splunk) that makes use of the collected audit log events to give you an overview of the activities across your enterprise.
+Along with this modular input we're providing a [Github App for Splunk](https://splunkbase.splunk.com/app/5596/) that makes use of the collected audit log events to give you an overview of the activities across your enterprise.
 
 You can install it via the [Manage Apps page](https://docs.splunk.com/Documentation/Splunk/8.2.0/Admin/Deployappsandadd-ons).
 
@@ -152,6 +134,10 @@ If you've enabled debug mode be ready to change your personal access token becau
 
 GitHub apps cannot be installed on the enterprise level. The REST API requires enterprise admin privileges which are out of scope for GitHub apps.
 
+## Support
+
+Support for Github Audit Log Monitoring Add-On for Splunk is run through [Github Issues](https://github.com/splunk/github-audit-log-monitoring-add-on-for-splunk/issues). Please open a new issue for any support issues or for feature requests. You may also open a Pull Request if you'd like to contribute additional dashboards, eventtypes for webhooks, or enhancements you may have.
+
 ## Troubleshooting
 
 ### Read logs in Splunk
@@ -177,6 +163,3 @@ State files for enterprises are stored in this directory:
 ```sh
 $SPLUNK_HOME/etc/apps/ghe_audit_log_monitoring/state/
 ```
-## Support
-
-Support for Github Audit Log Monitoring Add-On for Splunk is run through [Github Issues](https://github.com/splunk/github-audit-log-monitoring-add-on-for-splunk/issues). Please open a new issue for any support issues or for feature requests. You may also open a Pull Request if you'd like to contribute additional dashboards, eventtypes for webhooks, or enhancements you may have.
