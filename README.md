@@ -112,7 +112,7 @@ You can install it via the [Manage Apps page](https://docs.splunk.com/Documentat
 
 Make sure to replace the `[STANZA_NAME]` placeholder with the name of your modular input instance (the first field in the input parameters configured in the previous section).
 
-![Sample activity dashboard screenshot](./images/FBD9E443-9CC4-457E-AAF1-B0A6F5E9112A.png)
+![Sample activity dashboard screenshot](./images/0B64F3C9-F2C3-4074-A7C0-3BC2353C7FFA.png)
 
 ## FAQs
 
@@ -133,6 +133,10 @@ If you've enabled debug mode be ready to change your personal access token becau
 ### Why can't I use a GitHub app instead of a personal access token?
 
 GitHub apps cannot be installed on the enterprise level. The REST API requires enterprise admin privileges which are out of scope for GitHub apps.
+
+### Can I use this with GitHub Enterprise Server?
+
+This tool has been designed to consume the [Enterprise Audit Log API](https://docs.github.com/en/rest/reference/enterprise-admin#audit-log) which is not available for GitHub Enterprise Server because the audit log on the latter can be forwarded via [log forwarding](https://docs.github.com/en/enterprise-server/admin/user-management/monitoring-activity-in-your-enterprise/log-forwarding#enabling-log-forwarding) directly to Splunk without the need to poll for data.
 
 ## Support
 
