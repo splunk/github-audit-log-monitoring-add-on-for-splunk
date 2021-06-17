@@ -46,8 +46,8 @@ The following are the required scopes for the personal access token allowing the
 
 - **Hostname**
 
-  - This is the hostname of your GitHub Enterprise instance. Make sure there are no trailing `/` in the URL provided. This could either be a FQDN or an IP address. Do not append any paths beyond the tld.
-  - Example: [https://api.github.com](https://api.github.com)
+  - This is the hostname of your GitHub Enterprise instance. Make sure there are no leading `http://`/`https://` or trailing `/` in the URL provided. This could either be a FQDN or an IP address. Do not append any paths beyond the tld.
+   - Example: [api.github.com](https://api.github.com)
 
 - **Enterprise**
 
