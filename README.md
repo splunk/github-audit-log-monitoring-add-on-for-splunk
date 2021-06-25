@@ -16,11 +16,11 @@ This modular input makes an HTTPS request to the GitHub Enterprise's Audit Log R
 
 ## Installation
 
-1. Download the latest release from [Splunkbase](https://splunkbase.splunk.com/app/5595/)
+1. Download the latest release from [Splunkbase](https://splunkbase.splunk.com/app/5595/).
 
-1. On a Splunk Heavy Forwarder, go to Apps > Manage Apps.
+1. On a Splunk heavy forwarder, go to **Apps** > **Manage Apps**.
 
-1. On the Apps page, click **Install app from file**, and upload the SPL file you downloaded from Splunkbase. If an existing copy of the app already exists, please check the *Upgrade app* checkbox.
+1. On the **Apps** page, click **Install app from file**, and upload the SPL file you downloaded from Splunkbase. If an existing copy of the app already exists, check the **Upgrade app** checkbox.
 
 1. Generate a Personal Access Token in GitHub Enterprise with the `site_admin` scope.
 
@@ -28,7 +28,7 @@ This modular input makes an HTTPS request to the GitHub Enterprise's Audit Log R
 
 ### Personal Access Token Scope
 
-The following are the required scopes for the personal access token allowing the module to fetch the audit log entries successfully:
+These are the required scopes for the personal access token allowing the module to fetch the audit log entries successfully:
 
 - [x] admin:enterprise `Full control of enterprises`
   - [x] manage_billing:enterprise `Read and write enterprise billing data`
@@ -40,46 +40,46 @@ The following are the required scopes for the personal access token allowing the
 
 - **name**
 
-  - This is name of your instance. You can have multiple modular inputs running simultaneously. However, this is not a recommended behavior for this module.
-  - Takes: alpha-numeric, white spaces and symbol characters
+  - This is name of your instance. You can have multiple modular inputs running simultaneously. However, this isn't recommended for this module.
+  - Accepts: alpha-numeric, white spaces, and symbol characters
   - Example: `GHE-enterprise-name`
 
 - **Hostname**
 
-  - This is the hostname of your GitHub Enterprise instance. Make sure there are no leading `http://`/`https://` or trailing `/` in the URL provided. This could either be a FQDN or an IP address. Do not append any paths beyond the tld.
+  - This is the hostname of your GitHub Enterprise instance. Make sure there are no leading protocols (e.g. `http://`/`https://`) or trailing slashes (`/`) in the URL provided. This could either be a FQDN or an IP address. Don't append paths beyond the TLD.
    - Example: [api.github.com](https://api.github.com)
 
 - **Enterprise**
 
-  - The enterprise name for which to fetch audit log events
+  - The enterprise name for which to fetch audit log events.
 
 - **Personal Access Token**
 
-  - This is your personal access token that you generate for your or a service account in GitHub Enterprise. This module requires that the personal access token be created with the `site_admin` scope. This is a very sensitive token so make sure to keep it secure at all times!
+  - This is your personal access token that you generate for your account or a service account in GitHub Enterprise. This module requires that you create the personal access token with the `site_admin` scope. This is a very sensitive token so make sure to keep it secure at all times!
   - Security: The personal access token is encrypted and stored in Splunk's password storage. After you configure it the first time it will be replaced in Splunk's UI with a unique identifier. This identifier will be used by the module to fetch the personal access token before making the API request to GitHub Enterprise.
-  - Takes: a 40 character token
+  - Accepts: a 40-character token
   - Example: `d0e117b6ad471der3rjdowcc401a95d09202119f`
 
 - **Event Types**
 
   - The audit log contains multiple event types. This field allows you to specify which events to include:
-    - web - returns web (non-Git) events
-    - git - returns Git events
-    - all - returns both web and Git events
-  - [More details](https://docs.github.com/en/rest/reference/enterprise-admin#get-the-audit-log-for-an-enterprise)
+    - web: returns web (non-Git) events
+    - git: returns Git events
+    - allL returns both web and Git events
+  - Go to the [Splunk docs](https://docs.github.com/en/rest/reference/enterprise-admin#get-the-audit-log-for-an-enterprise) for more details.
 
 - **Maximum Entries Per Run**
 
-  - The maximum number of events / entries to fetch each time the script runs. To understand how to calculate the maximum number of entries and interval to best fit your organization go to the [Tweaking throughput](#tweaking-throughput) section below.
+  - The maximum number of events / entries to fetch each time the script runs. To understand how to calculate the maximum number of entries and interval to best fit your organization, go to the [Tweaking throughput](#tweaking-throughput) section.
 
 - **Verify Self-Signed Certificates**
 
-  - This is a parameter passed to the `get()` method in the `Requests` library. If the checkbox is cheked then the SSL certificate will be verified like a browser does and Requests will throw a SSLError if it’s unable to verify the certificate. Uncheck this box if you are using **self-signed certificates**.
+  - This is a parameter passed to the `get()` method in the `Requests` library. If the checkbox is cheked then the SSL certificate will be verified like a browser does and requests will throw a SSLError if it’s unable to verify the certificate. Uncheck this box if you are using **self-signed certificates**.
 
 - **Debug Mode**
 
   - The personal access token will be leaked in the splunkd logs. **DO NOT ENABLE** unless you are ready to update your personal access token.
-  - If you are experiencing issues and the module is not operating as intended, you can enable this mode to seethe module's debugging information in the `splunkd` logs.
+  - If you are experiencing issues and the module isn't operating as intended, you can enable this mode to see the module's debugging information in the `splunkd` logs.
 
 - **Interval**
 
@@ -93,7 +93,7 @@ The following are the required scopes for the personal access token allowing the
 
 ### Tweaking throughput
 
-This modular input fetches events by calling the [Enterprise Audit Log API](https://docs.github.com/en/rest/reference/enterprise-admin#get-the-audit-log-for-an-enterprise). This API returns a maximum of 100 events / entries per page. The pagination algorithm can fetch events up to the maximum entries per run defined. It's important to tweak the `maximum entries per run` and `interval` parameters to have the ability to fetch your data in a timely manner and stay `as close` to real-time as possible.
+This modular input fetches events by calling the [Enterprise Audit Log API](https://docs.github.com/en/rest/reference/enterprise-admin#get-the-audit-log-for-an-enterprise). This API returns a maximum of 100 events / entries per page. The pagination algorithm can fetch events up to the maximum entries per run you defined. It's important to tweak the `maximum entries per run` and `interval` parameters to have the ability to fetch your data in a timely manner and stay `as close` to real time as possible.
 
 **Example:**
 | Enterprise   | Events per minute | Maximum entries per run | Interval    | API calls used | Guidance                                                                                                                                                               |
@@ -118,9 +118,9 @@ Make sure to replace the `[STANZA_NAME]` placeholder with the name of your modul
 
 ### How is my Personal Access Token secured?
 
-On the first run the modular input will identify that your personal access token (PAT) is not encrypted. It will encrypt your PAT and store it in Splunk's credentials manager. It will replace the plaintext PAT with an md5 hash of an identifying key.
+On the first run the modular input will identify that your personal access token (PAT) isn't encrypted. It will encrypt your PAT and store it in Splunk's credentials manager. It will replace the plain text PAT with an md5 hash of an identifying key.
 
-Your personal access token is only visible in plaintext from the time you configure the modular input instance until the first run.
+Your personal access token is only visible in plain text from the time you configure the modular input instance until the first run.
 
 ### Does the interval field access only cron syntax?
 
@@ -132,7 +132,7 @@ If you've enabled debug mode be ready to change your personal access token becau
 
 ### Why can't I use a GitHub app instead of a personal access token?
 
-GitHub apps cannot be installed on the enterprise level. The REST API requires enterprise admin privileges which are out of scope for GitHub apps.
+GitHub apps can't be installed on the enterprise level. The REST API requires enterprise admin privileges which are out of scope for GitHub apps.
 
 ### Can I use this with GitHub Enterprise Server?
 
@@ -140,7 +140,7 @@ This tool has been designed to consume the [Enterprise Audit Log API](https://do
 
 ## Support
 
-Support for Github Audit Log Monitoring Add-On for Splunk is run through [Github Issues](https://github.com/splunk/github-audit-log-monitoring-add-on-for-splunk/issues). Please open a new issue for any support issues or for feature requests. You may also open a Pull Request if you'd like to contribute additional dashboards, eventtypes for webhooks, or enhancements you may have.
+Support for Github Audit Log Monitoring Add-On for Splunk is run through [Github Issues](https://github.com/splunk/github-audit-log-monitoring-add-on-for-splunk/issues). Open a new issue for any support issues or for feature requests. You may also open a pull request if you'd like to contribute additional dashboards, eventtypes for webhooks, or enhancements.
 
 ## Troubleshooting
 
