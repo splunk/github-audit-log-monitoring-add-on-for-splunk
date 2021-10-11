@@ -4,7 +4,7 @@ interval = <value>
 * Interval to collect data
 
 hostname = <value>
-* GHE hostname could be api.github.com or a custom domain
+* GHE hostname should be api.github.com
 
 type = <value>
 * organization or enterprise, defaults to enterprise
