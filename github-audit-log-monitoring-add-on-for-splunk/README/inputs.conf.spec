@@ -6,6 +6,9 @@ interval = <value>
 hostname = <value>
 * GHE hostname could be api.github.com or a custom domain
 
+type = <value>
+* organization or enterprise, defaults to enterprise
+
 enterprise = <value>
 * Enterprise name to query the audit log of
 

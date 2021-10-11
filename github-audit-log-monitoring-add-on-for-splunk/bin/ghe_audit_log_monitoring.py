@@ -403,19 +403,22 @@ class MyScript(Script):
             )
             github.set_event_types(self.event_types)
             logging.debug(
-                "%s ::: stream_events(): Loaded page_cursor from state file: {}".format(
+                "{} ::: stream_events(): Loaded page_cursor from state file: {}".format(
+                    self.input_name,
                     self.state["input"]["page_cursor"]
-                ), self.input_name
+                )
             )
             logging.debug(
-                "%s ::: stream_events(): Loaded last_document_id from state file: {}".format(
+                "{} ::: stream_events(): Loaded last_document_id from state file: {}".format(
+                    self.input_name,
                     self.state["input"]["last_document_id"]
-                ), self.input_name
+                )
             )
             logging.debug(
-                "%s ::: stream_events(): Loaded last_count from state file: {}".format(
+                "{} ::: stream_events(): Loaded last_count from state file: {}".format(
+                    self.input_name,
                     self.state["input"]["last_count"]
-                ), self.input_name
+                )
             )
             logging.debug("%s ::: stream_events(): REQUESTING DATA", self.input_name)
             page_cursor = self.state["input"]["page_cursor"]
@@ -435,7 +438,7 @@ class MyScript(Script):
                 last_count=last_count,
             )
             logging.debug("%s ::: stream_events(): Pushing data to splunk", self.input_name)
-            logging.info("%s ::: stream_events(): Fetched: {} events".format(audit_log.total), self.input_name)
+            logging.info("{} ::: stream_events(): Fetched: {} events".format(self.input_name, audit_log.total))
             for entry in audit_log:
                 # Prepare the event
                 event = Event()
@@ -446,9 +449,10 @@ class MyScript(Script):
             if audit_log.page_cursor["next"] is not None:
                 self.state.set("input", "page_cursor", audit_log.page_cursor["next"])
                 logging.debug(
-                    "%s ::: stream_events(): Updating page_cursor: {}".format(
+                    "{} ::: stream_events(): Updating page_cursor: {}".format(
+                        self.input_name,
                         audit_log.page_cursor["next"]
-                    ), self.input_name
+                    )
                 )
             else:
                 self.state.set(
@@ -459,18 +463,20 @@ class MyScript(Script):
                     else "",
                 )
                 logging.debug(
-                    "%s ::: stream_events(): Updating page_cursor: {}".format(
+                    "{} ::: stream_events(): Updating page_cursor: {}".format(
+                        self.input_name,
                         audit_log.page_cursor["last"]
-                    ), self.input_name
+                    )
                 )
             logging.debug(
-                "%s ::: stream_events(): Max entries reached: {} with {} entries".format(
+                "{} ::: stream_events(): Max entries reached: {} with {} entries".format(
+                    self.input_name,
                     github.max_entries_reached,
                     audit_log.total,
-                ), self.input_name
+                )
             )
             logging.info(
-                "%s ::: stream_events(): API Rate limits: {}".format(audit_log.api_rate_limits), self.input_name
+                "{} ::: stream_events(): API Rate limits: {}".format(self.input_name, audit_log.api_rate_limits)
             )
             # Update the last document_id and count fetched
             logging.debug(
@@ -484,7 +490,7 @@ class MyScript(Script):
             )
             self.state.set("input", "last_count", str(audit_log.last_page["count"]))
             self.save_state(self.state, self.enterprise)
-            logging.info("stream_events(): SUCCESS")
+            logging.info("$s ::: stream_events(): SUCCESS", self.input_name)
         # pylint: disable=W0702
         except:
             logging.error("Unexpected error: \n", exc_info=True)
