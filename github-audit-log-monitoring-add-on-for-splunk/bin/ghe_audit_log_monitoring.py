@@ -216,11 +216,12 @@ class MyScript(Script):
             service = client.connect(**args)
             # Debug
             logging.debug(
-                "encrypt_personal_access_token() personal_access_token: %s",
+                "%s ::: encrypt_personal_access_token() personal_access_token: %s",
+                self.input_name,
                 new_personal_access_token,
             )
             logging.debug(
-                "encrypt_personal_access_token() credential_id: %s", new_credential_id
+                "%s ::: encrypt_personal_access_token() credential_id: %s", self.input_name, new_credential_id
             )
             # If the credential already exists, delete it.
             for storage_credential in service.storage_passwords:
@@ -233,7 +234,8 @@ class MyScript(Script):
                 new_personal_access_token, new_credential_id
             )
             logging.debug(
-                "encrypt_personal_access_token() service.storage_passwords.create(): %s",
+                "%s ::: encrypt_personal_access_token() service.storage_passwords.create(): %s",
+                self.input_name,
                 cred.content,
             )
 
@@ -280,13 +282,13 @@ class MyScript(Script):
         credential_id = self.state["input"]["pat_credential_id"]
         # Debug
         logging.debug(
-            "get_personal_access_token() credential_id from state: %s", credential_id
+            "%s ::: get_personal_access_token() credential_id from state: %s", self.input_name, credential_id
         )
         logging.debug(
-            "get_personal_access_token() input_credential_id: %s", input_credential_id
+            "%s ::: get_personal_access_token() input_credential_id: %s", self.input_name, input_credential_id
         )
         if credential_id == input_credential_id:
-            logging.debug("get_personal_access_token() trying to fetch " "plaintext PAT")
+            logging.debug("%s ::: get_personal_access_token() trying to fetch " "plaintext PAT", self.input_name)
             # credential_id matches the one on file. Meaning no new PAT
             # was provided.
             # We fetch the PAT on record
@@ -296,7 +298,8 @@ class MyScript(Script):
                 if storage_credential.username == input_credential_id:
                     # Debug
                     logging.debug(
-                        "get_personal_access_token() personal_access_token: %s",
+                        "%s ::: get_personal_access_token() personal_access_token: %s",
+                        self.input_name,
                         storage_credential.content.clear_password,
                     )
                     return storage_credential.content.clear_password
@@ -330,7 +333,7 @@ class MyScript(Script):
             if not inputs.inputs:
                 # Right after installation, the inputs are not configured yet
                 # to avoid an exception in the logs, we skip this
-                logging.debug("stream_events() skipping...")
+                logging.debug("%s ::: stream_events() skipping...",self.input_name)
                 return
             self.input_name, self.input_items = inputs.inputs.popitem()
             # The Argument.data_type_boolean is not actually a boolean it's
@@ -358,9 +361,9 @@ class MyScript(Script):
             # latest state
             self.state = self.load_state(self.enterprise)
             # Debug
-            logging.debug("stream_events() input_name: %s", self.input_name)
-            logging.debug("stream_events() input_items: %s", self.input_items)
-            logging.debug("stream_events() config: %s", self.state["input"])
+            logging.debug("%s ::: stream_events() input_name: %s", self.input_name, self.input_name)
+            logging.debug("%s ::: stream_events() input_items: %s", self.input_name, self.input_items)
+            logging.debug("%s ::: stream_events() config: %s", self.input_name, self.state["input"])
             self.hostname = self.input_items["hostname"]
             # If this is a GHES instance we need to manipulate the hostname
             # to build the appropriate GraphQL endpoint
@@ -377,8 +380,8 @@ class MyScript(Script):
             self.personal_access_token = self.get_personal_access_token(
                 self.input_items["personal_access_token"]
             )
-            logging.debug("stream_events() hostname: %s", self.hostname)
-            logging.debug("stream_events() ignore_ssc: %s", self.ignore_ssc)
+            logging.debug("%s ::: stream_events() hostname: %s", self.input_name, self.hostname)
+            logging.debug("%s ::: stream_events() ignore_ssc: %s", self.input_name, self.ignore_ssc)
             # This section contains the logic for fetching the audit log entries.
             #
             # It will make multiple calls to get_enterprise_audit_log() and handle
@@ -400,21 +403,21 @@ class MyScript(Script):
             )
             github.set_event_types(self.event_types)
             logging.debug(
-                "stream_events(): Loaded page_cursor from state file: {}".format(
+                "%s ::: stream_events(): Loaded page_cursor from state file: {}".format(
                     self.state["input"]["page_cursor"]
-                )
+                ), self.input_name
             )
             logging.debug(
-                "stream_events(): Loaded last_document_id from state file: {}".format(
+                "%s ::: stream_events(): Loaded last_document_id from state file: {}".format(
                     self.state["input"]["last_document_id"]
-                )
+                ), self.input_name
             )
             logging.debug(
-                "stream_events(): Loaded last_count from state file: {}".format(
+                "%s ::: stream_events(): Loaded last_count from state file: {}".format(
                     self.state["input"]["last_count"]
-                )
+                ), self.input_name
             )
-            logging.debug("stream_events(): REQUESTING DATA")
+            logging.debug("%s ::: stream_events(): REQUESTING DATA", self.input_name)
             page_cursor = self.state["input"]["page_cursor"]
             last_document_id = self.state["input"]["last_document_id"]
             # last_count needs to be an integer and config_parser doesn't play
@@ -431,8 +434,8 @@ class MyScript(Script):
                 last_document_id=last_document_id,
                 last_count=last_count,
             )
-            logging.debug("stream_events(): Pushing data to splunk")
-            logging.info("stream_events(): Fetched: {} events".format(audit_log.total))
+            logging.debug("%s ::: stream_events(): Pushing data to splunk", self.input_name)
+            logging.info("%s ::: stream_events(): Fetched: {} events".format(audit_log.total), self.input_name)
             for entry in audit_log:
                 # Prepare the event
                 event = Event()
@@ -443,9 +446,9 @@ class MyScript(Script):
             if audit_log.page_cursor["next"] is not None:
                 self.state.set("input", "page_cursor", audit_log.page_cursor["next"])
                 logging.debug(
-                    "stream_events(): Updating page_cursor: {}".format(
+                    "%s ::: stream_events(): Updating page_cursor: {}".format(
                         audit_log.page_cursor["next"]
-                    )
+                    ), self.input_name
                 )
             else:
                 self.state.set(
@@ -456,25 +459,25 @@ class MyScript(Script):
                     else "",
                 )
                 logging.debug(
-                    "stream_events(): Updating page_cursor: {}".format(
+                    "%s ::: stream_events(): Updating page_cursor: {}".format(
                         audit_log.page_cursor["last"]
-                    )
+                    ), self.input_name
                 )
             logging.debug(
-                "stream_events(): Max entries reached: {} with {} entries".format(
+                "%s ::: stream_events(): Max entries reached: {} with {} entries".format(
                     github.max_entries_reached,
                     audit_log.total,
-                )
+                ), self.input_name
             )
             logging.info(
-                "stream_events(): API Rate limits: {}".format(audit_log.api_rate_limits)
+                "%s ::: stream_events(): API Rate limits: {}".format(audit_log.api_rate_limits), self.input_name
             )
             # Update the last document_id and count fetched
             logging.debug(
-                "stream_events(): Updating last_page: {} - {}".format(
+                "%s ::: stream_events(): Updating last_page: {} - {}".format(
                     audit_log.last_page["_document_id"],
                     str(audit_log.last_page["count"]),
-                )
+                ), self.input_name
             )
             self.state.set(
                 "input", "last_document_id", audit_log.last_page["_document_id"]
