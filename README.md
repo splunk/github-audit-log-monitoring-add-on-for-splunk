@@ -55,7 +55,7 @@ These are the required scopes for the personal access token allowing the module 
 
 - **Personal Access Token**
 
-  - This is your personal access token that you generate for your account or a service account in GitHub Enterprise. This module requires that you create the personal access token with the `site_admin` scope. This is a very sensitive token so make sure to keep it secure at all times!
+  - This is your personal access token that you generate for your account or a service account in GitHub Enterprise. This module requires that you create the personal access token with the `admin:enterprise` [scope](https://github.com/splunk/github-audit-log-monitoring-add-on-for-splunk#personal-access-token-scope). This is a very sensitive token so make sure to keep it secure at all times!
   - Security: The personal access token is encrypted and stored in Splunk's password storage. After you configure it the first time it will be replaced in Splunk's UI with a unique identifier. This identifier will be used by the module to fetch the personal access token before making the API request to GitHub Enterprise.
   - Accepts: a 40-character token
   - Example: `d0e117b6ad471der3rjdowcc401a95d09202119f`
