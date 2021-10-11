@@ -186,8 +186,8 @@ class GitHub:
                     page_cursor = audit_log.page_cursor["next"]
             else:
                 raise RuntimeError(
-                    "Could not fetch audit log data. Please check your configuration, access token scope / correctness and API rate limits. status_code: {} - url: {}".format(
-                        response.status_code, response.url
+                    "Could not fetch audit log data. Please check your configuration, access token scope / correctness and API rate limits. status_code: {} - url: {} - Response: {}".format(
+                        response.status_code, response.url, response.text
                     )
                 )
         return audit_log
