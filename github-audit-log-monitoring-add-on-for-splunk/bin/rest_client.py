@@ -83,7 +83,7 @@ class GitHub:
         return self._event_types
 
     def get_enterprise_audit_log(
-        self, enterprise=None, page_cursor=None, last_document_id=None, last_count=None
+        self, type=None, enterprise=None, page_cursor=None, last_document_id=None, last_count=None
     ):
         """Calls the GHE Audit Log REST API to fetch audit log entries.
         It creates an instance of the AuditLog iterable and passes the
@@ -104,9 +104,11 @@ class GitHub:
         Returns:
             [AuditLog]: AuditLog: Returns an AuditLog instance
         """
-        audit_log = AuditLog(enterprise=enterprise)
+        audit_log = AuditLog(type=type,enterprise=enterprise)
         while audit_log.has_next_page:
-            slug = "/enterprises/{enterprise}/audit-log".replace(
+            slug = "/{type}/{enterprise}/audit-log".replace(
+                "{type}", type
+            ).replace(
                 "{enterprise}", enterprise
             )
             headers = {

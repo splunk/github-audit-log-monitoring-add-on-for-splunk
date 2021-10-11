@@ -39,6 +39,7 @@ class MyScript(Script):
         self.credential_id = ""
         self.ignore_ssc = False
         self.state = None
+        self.type = ""
         # Configure  the logger
         self.logger = logging.getLogger()
         self.logging_handler = None
@@ -117,6 +118,16 @@ class MyScript(Script):
                 description="Hostname or IP of your instance. Make sure "
                 "there is no trailing '/'."
                 "Example: api.github.com",
+                data_type=Argument.data_type_string,
+                required_on_create=True,
+                required_on_edit=False,
+            )
+        )
+        scheme.add_argument(
+            Argument(
+                name="type",
+                title="Account Type",
+                description="Account type. Must be either 'organization' or 'enterprise'",
                 data_type=Argument.data_type_string,
                 required_on_create=True,
                 required_on_edit=False,
@@ -328,6 +339,13 @@ class MyScript(Script):
             else:
                 self.disable_logger()
             self.ignore_ssc = bool(int(self.input_items["ignore_ssc"]))
+            # Capture account type
+            self.type = self.input_items["type"]
+            if (self.type.lower()=="organization"):
+                self.type="orgs"
+            else:
+                self.type="enterprises"
+
             # Capture the enterprise name
             self.enterprise = self.input_items["enterprise"]
             # Capture the maximum number of entries to fetch per run
@@ -406,6 +424,7 @@ class MyScript(Script):
                 else 0
             )
             audit_log = github.get_enterprise_audit_log(
+                type=self.type,
                 enterprise=self.enterprise,
                 page_cursor=page_cursor,
                 last_document_id=last_document_id,

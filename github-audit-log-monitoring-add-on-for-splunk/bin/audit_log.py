@@ -11,7 +11,8 @@ from audit_log_entry import AuditLogEntry
 
 
 class AuditLog:
-    def __init__(self, enterprise=None, **kwargs):
+    def __init__(self, type=None, enterprise=None, **kwargs):
+        self._type = type
         self._enterprise = enterprise
         self._entries = []
         self._total = 0
@@ -37,6 +38,10 @@ class AuditLog:
     @property
     def page_cursor(self):
         return self._page_cursor
+
+    @property
+    def type(self):
+        return self._type
 
     @property
     def enterprise(self):
