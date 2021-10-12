@@ -211,33 +211,33 @@ class MyScript(Script):
         """Encrypts the personal access token and stores it along with the
         credential id in Splunk's storage
         """
-        if new_personal_access_token.startswith('ghe_'):
-            args = {"token": self.session_key}
-            service = client.connect(**args)
-            # Debug
-            logging.debug(
-                "%s ::: encrypt_personal_access_token() personal_access_token: %s",
-                self.input_name,
-                new_personal_access_token,
-            )
-            logging.debug(
-                "%s ::: encrypt_personal_access_token() credential_id: %s", self.input_name, new_credential_id
-            )
-            # If the credential already exists, delete it.
-            for storage_credential in service.storage_passwords:
-                if storage_credential.username == new_credential_id:
-                    service.storage_passwords.delete(username=storage_credential.username)
-                    break
+        #if new_personal_access_token.startswith('ghe_'):
+        args = {"token": self.session_key}
+        service = client.connect(**args)
+        # Debug
+        logging.debug(
+            "%s ::: encrypt_personal_access_token() personal_access_token: %s",
+            self.input_name,
+            new_personal_access_token,
+        )
+        logging.debug(
+            "%s ::: encrypt_personal_access_token() credential_id: %s", self.input_name, new_credential_id
+        )
+        # If the credential already exists, delete it.
+        for storage_credential in service.storage_passwords:
+            if storage_credential.username == new_credential_id:
+                service.storage_passwords.delete(username=storage_credential.username)
+                break
 
-            # Create the credential.
-            cred = service.storage_passwords.create(
-                new_personal_access_token, new_credential_id
-            )
-            logging.debug(
-                "%s ::: encrypt_personal_access_token() service.storage_passwords.create(): %s",
-                self.input_name,
-                cred.content,
-            )
+        # Create the credential.
+        cred = service.storage_passwords.create(
+            new_personal_access_token, new_credential_id
+        )
+        logging.debug(
+            "%s ::: encrypt_personal_access_token() service.storage_passwords.create(): %s",
+            self.input_name,
+            cred.content,
+        )
 
     def mask_personal_access_token(self, credential_id):
         """Replaces the personal access token with the credential_id"""
