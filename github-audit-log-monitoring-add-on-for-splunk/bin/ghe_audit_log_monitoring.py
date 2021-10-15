@@ -480,17 +480,18 @@ class MyScript(Script):
             )
             # Update the last document_id and count fetched
             logging.debug(
-                "%s ::: stream_events(): Updating last_page: {} - {}".format(
+                "{} ::: stream_events(): Updating last_page: {} - {}".format(
+                    self.input_name,
                     audit_log.last_page["_document_id"],
                     str(audit_log.last_page["count"]),
-                ), self.input_name
+                )
             )
             self.state.set(
                 "input", "last_document_id", audit_log.last_page["_document_id"]
             )
             self.state.set("input", "last_count", str(audit_log.last_page["count"]))
             self.save_state(self.state, self.enterprise)
-            logging.info("$s ::: stream_events(): SUCCESS", self.input_name)
+            logging.info("{} ::: stream_events(): SUCCESS".format(self.input_name))
         # pylint: disable=W0702
         except:
             logging.error("Unexpected error: \n", exc_info=True)
