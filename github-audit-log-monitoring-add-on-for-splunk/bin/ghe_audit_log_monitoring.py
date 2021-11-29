@@ -215,11 +215,11 @@ class MyScript(Script):
         args = {"token": self.session_key}
         service = client.connect(**args)
         # Debug
-        logging.debug(
-            "%s ::: encrypt_personal_access_token() personal_access_token: %s",
-            self.input_name,
-            new_personal_access_token,
-        )
+        #logging.debug(
+        #    "%s ::: encrypt_personal_access_token() personal_access_token: %s",
+        #    self.input_name,
+        #    new_personal_access_token,
+        #)
         logging.debug(
             "%s ::: encrypt_personal_access_token() credential_id: %s", self.input_name, new_credential_id
         )
@@ -233,11 +233,12 @@ class MyScript(Script):
         cred = service.storage_passwords.create(
             new_personal_access_token, new_credential_id
         )
-        logging.debug(
-            "%s ::: encrypt_personal_access_token() service.storage_passwords.create(): %s",
-            self.input_name,
-            cred.content,
-        )
+        # Uncomment if additional debugging needed.
+        #logging.debug(
+        #    "%s ::: encrypt_personal_access_token() service.storage_passwords.create(): %s",
+        #    self.input_name,
+        #    cred.content,
+        #)
 
     def mask_personal_access_token(self, credential_id):
         """Replaces the personal access token with the credential_id"""
@@ -281,12 +282,12 @@ class MyScript(Script):
         """
         credential_id = self.state["input"]["pat_credential_id"]
         # Debug
-        logging.debug(
-            "%s ::: get_personal_access_token() credential_id from state: %s", self.input_name, credential_id
-        )
-        logging.debug(
-            "%s ::: get_personal_access_token() input_credential_id: %s", self.input_name, input_credential_id
-        )
+        #logging.debug(
+        #    "%s ::: get_personal_access_token() credential_id from state: %s", self.input_name, credential_id
+        #)
+        #logging.debug(
+        #    "%s ::: get_personal_access_token() input_credential_id: %s", self.input_name, input_credential_id
+        #)
         if credential_id == input_credential_id:
             logging.debug("%s ::: get_personal_access_token() trying to fetch " "plaintext PAT", self.input_name)
             # credential_id matches the one on file. Meaning no new PAT
@@ -297,11 +298,11 @@ class MyScript(Script):
             for storage_credential in service.storage_passwords:
                 if storage_credential.username == input_credential_id:
                     # Debug
-                    logging.debug(
-                        "%s ::: get_personal_access_token() personal_access_token: %s",
-                        self.input_name,
-                        storage_credential.content.clear_password,
-                    )
+                    #logging.debug(
+                    #    "%s ::: get_personal_access_token() personal_access_token: %s",
+                    #    self.input_name,
+                    #    storage_credential.content.clear_password,
+                    #)
                     return storage_credential.content.clear_password
             # If we loop through all the credentials and we don't find our
             # PAT - something is wrong.
@@ -362,8 +363,8 @@ class MyScript(Script):
             self.state = self.load_state(self.enterprise)
             # Debug
             logging.debug("%s ::: stream_events() input_name: %s", self.input_name, self.input_name)
-            logging.debug("%s ::: stream_events() input_items: %s", self.input_name, self.input_items)
-            logging.debug("%s ::: stream_events() config: %s", self.input_name, self.state["input"])
+            #logging.debug("%s ::: stream_events() input_items: %s", self.input_name, self.input_items)
+            #logging.debug("%s ::: stream_events() config: %s", self.input_name, self.state["input"])
             self.hostname = self.input_items["hostname"]
             # If this is a GHES instance we need to manipulate the hostname
             # to build the appropriate GraphQL endpoint
