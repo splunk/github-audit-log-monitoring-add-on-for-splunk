@@ -98,9 +98,9 @@ This modular input fetches events by calling the [Enterprise Audit Log API](http
 **Example:**
 | Enterprise   | Events per minute | Maximum entries per run | Interval    | API calls used | Guidance                                                                                                                                                               |
 |--------------|-------------------|-------------------------|-------------|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Evil-Corp    | 1000              | 1000                    | */1* ** * | 600 per hour   | The modular input should be able to handle this with ease.                                                                                                             |
-| Poizen-Inc   | 5000              | 5000                    | */1* ** * | 3000 per hour  | We are approaching API rate limit per hour.  Depending on latency, 5000 entries = 50 API calls per minute.  One minute might not be sufficient to fetch all this data. |
-| Monsters-Inc | 10000             | 2000                    | */1* ** * | 1200 per hour  | You will be fetching events with a slight delay.                                                                                                                       |
+| Evil-Corp    | 1000              | 1000                    | `*/1 * * * *` | 600 per hour   | The modular input should be able to handle this with ease.                                                                                                             |
+| Poizen-Inc   | 5000              | 5000                    | `*/1 * * * *` | 3000 per hour  | We are approaching API rate limit per hour.  Depending on latency, 5000 entries = 50 API calls per minute.  One minute might not be sufficient to fetch all this data. |
+| Monsters-Inc | 10000             | 2000                    | `*/1 * * * *` | 1200 per hour  | You will be fetching events with a slight delay.                                                                                                                       |
 
 ## Use cases
 
