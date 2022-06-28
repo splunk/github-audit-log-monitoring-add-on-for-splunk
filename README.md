@@ -1,5 +1,7 @@
 # GitHub Enterprise Audit Log Monitoring
 
+## This Add-on is being sunset in favor of the new v2.0 version of [Splunk Add-on for GitHub](https://splunkbase.splunk.com/app/6254/). The new add-on supports both GitHub Enterprise Cloud and Server, proxy, and is 100% Splunk supported.
+
 > Splunk modular input plugin to fetch the enterprise audit log from GitHub Enterprise
 
 Support for modular inputs in Splunk Enterprise 5.0 and later enables you to add new types of inputs to Splunk Enterprise that are treated as native Splunk Enterprise inputs.
